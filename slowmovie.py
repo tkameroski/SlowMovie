@@ -119,6 +119,7 @@ if not currentVideo:
     print("No videos found")
     sys.exit()
 
+print ("SlowMovie Player")
 print("Update interval: " + str(args.delay))
 if not args.random:
     print("Frame increment: " + str(args.increment))
@@ -128,6 +129,9 @@ with open("nowPlaying", "w") as file:
 
 videoFilename = os.path.basename(currentVideo)
 
+if args.loop:
+    print ("Loop mode")
+    
 if not args.loop:
     viddir = os.path.dirname(currentVideo)
     videos = list(filter(supported_filetype, os.listdir(viddir)))
@@ -168,6 +172,7 @@ while 1:
 
     if args.random:
         currentFrame = random.randint(0, frameCount)
+        print("Random mode")
 
     msTimecode = "%dms" % (currentFrame * frametime)
 
@@ -185,7 +190,7 @@ while 1:
     #pil_im = pil_im.convert(mode = "1", dither = Image.FLOYDSTEINBERG)
 
     # display the image
-    #print(f"Displaying frame {currentFrame} of '{videoFilename}'")
+    print(f"Displaying frame {currentFrame} of {frameCount} from '{videoFilename}'")
     epd.display(epd.getbuffer(pil_im))
 
     if not args.random:
@@ -218,5 +223,6 @@ while 1:
     timeDiff = time.perf_counter() - timeStart
     if args.adjust_delay:
         time.sleep(max(args.delay - timeDiff, 0))
+        print(f"Time adjustment: {timeDiff}")
     else:
         time.sleep(args.delay)
