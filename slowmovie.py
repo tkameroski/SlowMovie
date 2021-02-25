@@ -31,7 +31,9 @@ contrast = 1.0
 fileTypes = [".mp4", ".mkv"]
 
 def exithandler(signum, frame):
-    epd_driver.epdconfig.module_exit()
+    epd = epd_driver.EPD()
+    epd.init()
+    epd.Clear()
     sys.exit()
 
 signal.signal(signal.SIGTERM, exithandler)
