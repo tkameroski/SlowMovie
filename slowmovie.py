@@ -31,8 +31,10 @@ contrast = 1.0
 fileTypes = [".mp4", ".mkv"]
 
 def exithandler(signum, frame):
-    epd_driver.epdconfig.module_exit()
-    sys.exit()
+    try:
+        epd_driver.epdconfig.module_exit()
+    finally:
+        sys.exit()
 
 signal.signal(signal.SIGTERM, exithandler)
 signal.signal(signal.SIGINT, exithandler)
@@ -123,6 +125,8 @@ print ("SlowMovie Player")
 print("Update interval: " + str(args.delay))
 if not args.random:
     print("Frame increment: " + str(args.increment))
+
+print("Contrast: " + str(args.contrast))
 
 with open("nowPlaying", "w") as file:
     file.write(os.path.abspath(currentVideo))
